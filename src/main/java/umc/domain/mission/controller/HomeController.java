@@ -6,10 +6,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 import umc.domain.mission.converter.HomeConverter;
 import umc.domain.mission.dto.HomeResDTO;
-import umc.domain.mission.dto.MissionResDTO;
 import umc.domain.mission.entity.Mission;
 import umc.domain.mission.exception.code.MissionSuccessCode;
-import umc.domain.mission.service.MissionService;
+import umc.domain.mission.service.MissionQueryService;
 import umc.global.apiPayload.ApiResponse;
 import umc.global.apiPayload.code.BaseSuccessCode;
 
@@ -18,7 +17,7 @@ import umc.global.apiPayload.code.BaseSuccessCode;
 @RequestMapping("/api/home")
 public class HomeController { //API 2개로 나눠서 구현
 
-    private final MissionService missionService;
+    private final MissionQueryService missionQueryService;
 
     @GetMapping("/summary")
     @Operation(summary = "홈 화면 상단 정보")
@@ -26,7 +25,7 @@ public class HomeController { //API 2개로 나눠서 구현
             @RequestHeader(name = "memberId") Long memberId
     ){
         BaseSuccessCode code = MissionSuccessCode.HOME_OK;
-        HomeResDTO.HomeSummaryDTO result = missionService.getHomeSummary(memberId);
+        HomeResDTO.HomeSummaryDTO result = missionQueryService.getHomeSummary(memberId);
         return ApiResponse.onSuccess(code, result);
     }
 
@@ -39,7 +38,7 @@ public class HomeController { //API 2개로 나눠서 구현
     ){
         BaseSuccessCode code = MissionSuccessCode.HOME_OK;
         //엔티티 page 받아오기
-        Page<Mission> missionPage = missionService.getHomeInfo(memberId, regionName, cursor);
+        Page<Mission> missionPage = missionQueryService.getHomeInfo(memberId, regionName, cursor);
         //컨버터 이용
         HomeResDTO.RegionMissionListDTO result = HomeConverter.toRegionMissionListDTO(missionPage);
 

@@ -23,7 +23,7 @@ import umc.domain.region.repository.CityRepository;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class MissionService {
+public class MissionQueryService {
 
     private final MemberRepository memberRepository;
     private final MemberMissionRepository memberMissionRepository;
@@ -41,16 +41,20 @@ public class MissionService {
         return memberMissionRepository.findAllByMemberAndStatus(member, status, pageRequest);
     }
 
-    //홈화면 정보 수집하는 서비스 로직
+    //홈화면 하단 미션 정보
     public Page<Mission> getHomeInfo(Long memberId, String cityName, Integer page){
         City city = cityRepository.findByName(cityName)
                 .orElseThrow(() -> new MissionException(MissionErrorCode.MISSION_NOT_FOUND));
+
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new  MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
 
         PageRequest pageRequest = PageRequest.of(page, 10);
 
         return missionRespository.findAvailableMissionsByCity(cityName, memberId, pageRequest);
     }
 
+    //홈 화면 상단 정보
     public HomeResDTO.HomeSummaryDTO getHomeSummary(Long memberId){
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new  MemberException(MemberErrorCode.MEMBER_NOT_FOUND));

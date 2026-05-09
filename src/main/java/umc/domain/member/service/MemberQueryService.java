@@ -10,8 +10,8 @@ import umc.domain.member.repository.MemberRepository;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
-public class MemberService {
+@Transactional(readOnly = true)
+public class MemberQueryService {
 
     private final MemberRepository memberRepository;
 

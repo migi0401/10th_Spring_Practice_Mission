@@ -9,6 +9,6 @@ public class ReviewResDTO {
     @Builder
     public record CreateReviewResultDTO(
             Long reviewId,
-            LocalDateTime cretaedAt
+            LocalDateTime createdAt
     ){}
 }

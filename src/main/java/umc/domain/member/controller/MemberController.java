@@ -4,11 +4,10 @@ import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import umc.domain.member.converter.MemberConverter;
-import umc.domain.member.dto.MemberReqDTO;
 import umc.domain.member.dto.MemberResDTO;
 import umc.domain.member.entity.Member;
 import umc.domain.member.exception.code.MemberSuccessCode;
-import umc.domain.member.service.MemberService;
+import umc.domain.member.service.MemberQueryService;
 import umc.global.apiPayload.ApiResponse;
 import umc.global.apiPayload.code.BaseSuccessCode;
 
@@ -17,7 +16,7 @@ import umc.global.apiPayload.code.BaseSuccessCode;
 @RequestMapping("/auth")
 public class MemberController {
 
-    private final MemberService memberService;
+    private final MemberQueryService memberService;
 
     /*
     @PostMapping("/users")

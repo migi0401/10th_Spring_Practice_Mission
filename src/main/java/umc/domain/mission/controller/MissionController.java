@@ -9,7 +9,7 @@ import umc.domain.mission.dto.MissionResDTO;
 import umc.domain.mission.entity.mapping.MemberMission;
 import umc.domain.mission.enums.MissionStatus;
 import umc.domain.mission.exception.code.MissionSuccessCode;
-import umc.domain.mission.service.MissionService;
+import umc.domain.mission.service.MissionQueryService;
 import umc.global.apiPayload.ApiResponse;
 import umc.global.apiPayload.code.BaseSuccessCode;
 
@@ -18,7 +18,7 @@ import umc.global.apiPayload.code.BaseSuccessCode;
 @RequestMapping("/api")
 public class MissionController {
 
-    private final MissionService missionService;
+    private final MissionQueryService missionQueryService;
 
     //미션 목록 조회
     @GetMapping("/userMissions")
@@ -31,7 +31,7 @@ public class MissionController {
         BaseSuccessCode code = MissionSuccessCode.MISSION_OK;
 
         //page로 받아옴
-        Page<MemberMission> memberMissionPage = missionService.getMyMissions(memberId, status, cursor);
+        Page<MemberMission> memberMissionPage = missionQueryService.getMyMissions(memberId, status, cursor);
         //converter이용해서 DTO형식으로 반환
         MissionResDTO.MissionPreviewListDTO result = MissionConverter.toMissionPreviewListDTO(memberMissionPage);
         //결과 반환

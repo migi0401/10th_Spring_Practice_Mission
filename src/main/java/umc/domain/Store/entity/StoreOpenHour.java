@@ -9,6 +9,7 @@ import umc.global.common.BaseEntity;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Entity
 @Getter
@@ -26,10 +27,10 @@ public class StoreOpenHour extends BaseEntity {
     private DayOfWeek openDay;
 
     @Column(name = "open_hour", nullable = false)
-    private LocalDate openTime;
+    private LocalTime openTime;
 
     @Column(name = "close_hour")
-    private LocalDate closeTime;
+    private LocalTime closeTime;
 
     @Column(name = "day_off", nullable = false)
     private Boolean dayOff;

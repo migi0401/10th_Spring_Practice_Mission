@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import umc.domain.review.dto.ReviewReqDTO;
 import umc.domain.review.dto.ReviewResDTO;
 import umc.domain.review.exception.code.ReviewSuccessCode;
-import umc.domain.review.service.ReviewService;
+import umc.domain.review.service.ReviewCommandService;
 import umc.global.apiPayload.ApiResponse;
 import umc.global.apiPayload.code.BaseSuccessCode;
 
@@ -15,7 +15,7 @@ import umc.global.apiPayload.code.BaseSuccessCode;
 @RequestMapping("/api/stores")
 public class ReviewController {
 
-    private final ReviewService reviewService;
+    private final ReviewCommandService reviewCommandService;
 
     @PostMapping("/{storeId}/reviews")
     @Operation(summary = "가게 리뷰 작성")
@@ -24,7 +24,7 @@ public class ReviewController {
             @RequestBody ReviewReqDTO.ReviewDTO request
     ){
         BaseSuccessCode code = ReviewSuccessCode.OK;
-        ReviewResDTO.CreateReviewResultDTO result = reviewService.createReview(StoreId, request);
+        ReviewResDTO.CreateReviewResultDTO result = reviewCommandService.createReview(StoreId, request);
         return ApiResponse.onSuccess(code, result);
     }
 

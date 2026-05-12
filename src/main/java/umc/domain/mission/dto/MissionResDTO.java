@@ -6,12 +6,14 @@ import java.util.List;
 
 public class MissionResDTO {
 
+    @Builder
     public record MissionPreviewListDTO(
             List<MissionPreviewDTO> missionList,
             Long nextCursor,
             Boolean hasNext
     ){}
 
+    @Builder
     public record MissionPreviewDTO(
             Long missionId,
             String storeName,
@@ -23,8 +25,17 @@ public class MissionResDTO {
             String status
     ){}
 
+    @Builder
     public record ChangeStatusDTO(
         Long userMissionId,
         String status
     ){}
+
+    @Builder
+    public record Pagination<T>(
+            List<T> data,
+            Integer pageNumber,
+            Integer pageSize
+    ){}
+
 }

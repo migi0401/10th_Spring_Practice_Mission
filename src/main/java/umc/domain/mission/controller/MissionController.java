@@ -23,17 +23,16 @@ public class MissionController {
     //미션 목록 조회
     @GetMapping("/userMissions")
     @Operation(summary = "미션 목록 조회")
-    public ApiResponse<MissionResDTO.MissionPreviewListDTO> getMyMissions(
-            @RequestParam(name = "memberId") Long memberId,
+    public ApiResponse<MissionResDTO.Pagination<MissionResDTO.MissionPreviewDTO>> getMyMissions(
+            @RequestParam Long memberId,
             @RequestParam(name = "status") MissionStatus status,
-            @RequestParam(name = "cursor", required = false) Integer cursor
+            @RequestParam Integer pageNumber,
+            @RequestParam Integer pageSize,
+            @RequestParam(required = false) String sort
     ){
         BaseSuccessCode code = MissionSuccessCode.MISSION_OK;
-
         //page로 받아옴
-        Page<MemberMission> memberMissionPage = missionQueryService.getMyMissions(memberId, status, cursor);
-        //converter이용해서 DTO형식으로 반환
-        MissionResDTO.MissionPreviewListDTO result = MissionConverter.toMissionPreviewListDTO(memberMissionPage);
+        MissionResDTO.Pagination<MissionResDTO.MissionPreviewDTO> result = missionQueryService.getMyMissions(memberId, status, pageSize, pageNumber, sort);
         //결과 반환
         return ApiResponse.onSuccess(code, result);
     }

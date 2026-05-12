@@ -3,8 +3,9 @@ package umc.domain.review.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import umc.domain.Store.entity.Store;
-import umc.domain.Store.repository.StoreRepository;
+
 import umc.domain.member.entity.Member;
 import umc.domain.member.exception.MemberException;
 import umc.domain.member.exception.code.MemberErrorCode;
@@ -16,6 +17,8 @@ import umc.domain.review.entity.Review;
 import umc.domain.review.exception.ReviewException;
 import umc.domain.review.exception.code.ReviewErrorCode;
 import umc.domain.review.repository.ReviewRepository;
+import umc.domain.Store.repository.StoreRepository;
+
 @Service
 @RequiredArgsConstructor
 @Transactional

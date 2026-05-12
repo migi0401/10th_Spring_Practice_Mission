@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.boot.autoconfigure.web.WebProperties;
 import umc.domain.Store.entity.Store;
 import umc.domain.member.entity.Member;
 import umc.global.common.BaseEntity;

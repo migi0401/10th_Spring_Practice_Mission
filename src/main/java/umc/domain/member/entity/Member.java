@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import umc.domain.inquiry.entity.Inquiry;
+import umc.domain.member.entity.mapping.MemberFood;
+import umc.domain.member.entity.mapping.MemberPolicy;
 import umc.domain.member.enums.Gender;
 import umc.domain.review.entity.Review;
 import umc.global.common.BaseEntity;
@@ -46,6 +48,9 @@ public class Member extends BaseEntity {
     @Column(name = "mail", nullable = false)
     private String mail;
 
+    @Column(name = "password", nullable = false)
+    private String password;
+
     @Column(name = "photo", nullable = false)
     private String photoUrl;
 
@@ -62,8 +67,15 @@ public class Member extends BaseEntity {
     private String socialProvider;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    private List<Inquiry>  inquiryList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<Review> reviewLists = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
-    private List<Inquiry> inquiries = new ArrayList<>();
-}
+    private List<MemberPolicy> memberPolicyList  = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    private List<MemberFood> memberFoodList = new ArrayList<>();
+
+   }

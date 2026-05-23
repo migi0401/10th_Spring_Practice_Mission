@@ -38,4 +38,11 @@ public class MemberPolicy extends BaseEntity {
     @JoinColumn(name = "policy_id", nullable = false)
     private Policy policy;
 
+    public void setMember(Member member) {
+        if (this.member != null) {
+            this.member.getMemberPolicyList().remove(this);
+        }
+        this.member = member;
+        member.getMemberPolicyList().add(this);
+    }
 }

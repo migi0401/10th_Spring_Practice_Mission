@@ -1,4 +1,4 @@
-package umc.global;
+package umc.global.config;
 
 import io.swagger.v3.oas.models.servers.Server;
 import io.swagger.v3.oas.models.security.SecurityScheme;
@@ -34,3 +34,4 @@ public class SwaggerConfig {
                 .components(components);
     }
 }
+

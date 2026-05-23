@@ -68,7 +68,7 @@ public class ReviewQueryService {
         }
 
         //다음 커서 로직
-        if(reviewList != null && !reviewList.isEmpty() && reviewList.hasNext()){
+        if(reviewList != null && reviewList.hasNext()){
             Review lastReview = reviewList.getContent().get(reviewList.getContent().size()-1);
 
             if(query.equalsIgnoreCase("score")){

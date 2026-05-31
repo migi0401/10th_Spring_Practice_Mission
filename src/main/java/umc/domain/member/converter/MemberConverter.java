@@ -6,7 +6,10 @@ import umc.domain.member.dto.MemberResDTO;
 import umc.domain.member.entity.Member;
 import umc.domain.member.entity.mapping.MemberFood;
 import umc.domain.member.entity.mapping.MemberPolicy;
+import umc.domain.member.enums.Gender;
+import umc.domain.member.enums.SocialType;
 import umc.domain.policy.entity.Policy;
+import umc.global.security.dto.OAuthDTO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +28,7 @@ public class MemberConverter {
         );
     }
 
+    //일반 회원 전용
     public static Member toMember(MemberReqDTO.JoinDTO request, String encodedPassword){
         return Member.builder()
                 .name(request.name())
@@ -39,6 +43,18 @@ public class MemberConverter {
                 .socialProvider("")//임시 저장
                 .password(encodedPassword)
                 .phoneNumber(request.phoneNumber())
+                .build();
+    }
+
+    //소셜 로그인 전용
+    public static Member toMember(OAuthDTO dto) {
+        return Member.builder()
+                .name(dto.getName())// 카카오는 닉네임을 주므로 이름/닉네임 동일하게 세팅
+                .mail(dto.getSocialEmail())
+                .socialUid(dto.getSocialUid())
+                .socialType(dto.getSocialType()) // 서비스에서 넘겨준 KAKAO, NAVER 등
+                // 👇 아래는 DB 필수값(nullable = false)을 통과하기 위한 더미(임시) 데이터들입니다.
+                .gender(Gender.NONE)
                 .build();
     }
 
@@ -86,6 +102,12 @@ public class MemberConverter {
         return MemberResDTO.JoinResultDTO.builder()
                 .userId(member.getId())
                 .createdAt(member.getCreatedAt())
+                .build();
+    }
+
+    public static MemberResDTO.LoginResultDTO toLogin(String accessToken) {
+        return MemberResDTO.LoginResultDTO.builder()
+                .accessToken(accessToken)
                 .build();
     }
 }

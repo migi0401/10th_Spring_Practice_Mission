@@ -29,4 +29,9 @@ public class MemberReqDTO {
       boolean location,
       boolean marketing
     ){}
+
+    public record LoginReqDTO(
+            @NotNull String mail,
+            @NotNull String password
+    ){}
 }

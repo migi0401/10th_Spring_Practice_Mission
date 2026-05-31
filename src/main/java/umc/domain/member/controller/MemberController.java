@@ -3,6 +3,7 @@ package umc.domain.member.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import umc.domain.member.converter.MemberConverter;
 import umc.domain.member.dto.MemberReqDTO;
@@ -13,6 +14,7 @@ import umc.domain.member.service.MemberCommandService;
 import umc.domain.member.service.MemberQueryService;
 import umc.global.apiPayload.ApiResponse;
 import umc.global.apiPayload.code.BaseSuccessCode;
+import umc.global.security.entity.AuthMember;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,6 +24,15 @@ public class MemberController {
     private final MemberQueryService memberQueryService;
     private final MemberCommandService memberCommandService;
 
+    @PostMapping("/login")
+    @Operation(summary = "로그인")
+    public ApiResponse<MemberResDTO.LoginResultDTO> login(
+            @RequestBody @Valid MemberReqDTO.LoginReqDTO request
+    ){
+        MemberResDTO.LoginResultDTO result = memberCommandService.login(request);
+        BaseSuccessCode code = MemberSuccessCode.OK;
+        return ApiResponse.onSuccess(code, result);
+    }
 
     @PostMapping("/sign-up")
     @Operation(summary = "회원가입")
@@ -38,14 +49,10 @@ public class MemberController {
     @GetMapping("/me")
     @Operation(summary = "마이페이지 프로필 조회")
     public ApiResponse<MemberResDTO.MyProfileDTO> getMyProfile(
-            @RequestParam (name = "memberId") Long memberId
+            @AuthenticationPrincipal AuthMember authMember
     ){
         BaseSuccessCode code = MemberSuccessCode.OK;
-        //회원 엔티티 조회
-        Member member = memberQueryService.getMyProfile(memberId);
-
-        //컨버터 이용
-        MemberResDTO.MyProfileDTO result = MemberConverter.toMyProfileDTO(member);
+        MemberResDTO.MyProfileDTO result = memberQueryService.getMyProfile(authMember);
 
         return ApiResponse.onSuccess(code, result);
     }

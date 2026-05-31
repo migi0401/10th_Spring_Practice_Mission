@@ -24,11 +24,11 @@ public class AuthMember implements UserDetails {
 
     @Override
     public @Nullable String getPassword() {
-        return member.getPassword();
+        return null;
     }
     @Override
     public @Nullable String getUsername() {
-        return member.getMail();
+        return member.getSocialUid();
     }
 
     @Override
@@ -49,5 +49,9 @@ public class AuthMember implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public String getSocialType(){
+        return member.getSocialType().name();
     }
 }

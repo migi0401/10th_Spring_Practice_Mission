@@ -9,6 +9,7 @@ import umc.domain.inquiry.entity.Inquiry;
 import umc.domain.member.entity.mapping.MemberFood;
 import umc.domain.member.entity.mapping.MemberPolicy;
 import umc.domain.member.enums.Gender;
+import umc.domain.member.enums.SocialType;
 import umc.domain.review.entity.Review;
 import umc.global.common.BaseEntity;
 
@@ -31,7 +32,7 @@ public class Member extends BaseEntity {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "nickname", nullable = false)
+    @Column(name = "nickname")
     private String nickname;
 
     @Column(name = "gender", nullable = false)
@@ -39,32 +40,36 @@ public class Member extends BaseEntity {
     @Builder.Default
     private Gender gender = Gender.NONE;
 
-    @Column(name = "birth", nullable = false)
+    @Column(name = "birth")
     private LocalDate birth;
 
-    @Column(name = "address", nullable = false)
+    @Column(name = "address")
     private String address;
 
     @Column(name = "mail", nullable = false)
     private String mail;
 
-    @Column(name = "password", nullable = false)
+    @Column(name = "password")
     private String password;
 
-    @Column(name = "photo", nullable = false)
+    @Column(name = "photo")
     private String photoUrl;
 
-    @Column(name = "phoneNumber", nullable = false)
+    @Column(name = "phoneNumber")
     private String phoneNumber;
 
-    @Column(name = "userPoint", nullable = false)
+    @Column(name = "userPoint")
     private Integer userPoint;
 
     @Column(name = "social_uid", nullable = false)
     private String socialUid;
 
-    @Column(name = "social_provider", nullable = false)
+    @Column(name = "social_provider")
     private String socialProvider;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "social_type", nullable = false)
+    private SocialType socialType;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<Inquiry>  inquiryList = new ArrayList<>();

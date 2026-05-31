@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import umc.domain.member.entity.Member;
+import umc.domain.member.enums.SocialType;
 import umc.domain.member.exception.MemberException;
 import umc.domain.member.exception.code.MemberErrorCode;
 import umc.domain.member.repository.MemberRepository;
@@ -17,12 +18,31 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     private final MemberRepository memberRepository;
 
-    @Override
-    public UserDetails loadUserByUsername(String mail)
+    //@Override
+    /*public UserDetails loadUserByUsername(String mail)
         throws UsernameNotFoundException {
         Member member =
                 memberRepository.findByMail(mail)
                         .orElseThrow(() -> new UsernameNotFoundException("해당 이메일을 가진 유저를 찾을 수 없습니다."));
+        return new AuthMember(member);
+    }
+     */
+    @Override
+    public UserDetails loadUserByUsername(
+            String username
+    ) throws UsernameNotFoundException{
+        Member member = memberRepository.findByMail(username)
+                .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
+        return new AuthMember(member);
+    }
+
+    public UserDetails loadUserByUidAndSocialType(
+            SocialType socialType,
+            String username
+    )throws UsernameNotFoundException {
+        Member member = memberRepository.findBySocialTypeAndSocialUid(socialType, username)
+                .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
+
         return new AuthMember(member);
     }
 }

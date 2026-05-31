@@ -11,6 +11,12 @@ public class MemberResDTO {
             Long userId,
             LocalDateTime createdAt
     ){}
+    //로그인 응답
+    @Builder
+    public record LoginResultDTO(
+            String accessToken
+    ){}
+
     //마이페이지 조회용
     public record MyProfileDTO(
             String nickname,

@@ -1,5 +1,6 @@
 package umc.domain.member.service;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,8 @@ import umc.domain.member.exception.code.MemberErrorCode;
 import umc.domain.member.repository.MemberRepository;
 import umc.domain.policy.entity.Policy;
 import umc.domain.policy.repository.PolicyRepository;
+import umc.global.security.entity.AuthMember;
+import umc.global.security.util.JwtUtil;
 
 import java.util.List;
 
@@ -27,6 +30,7 @@ public class MemberCommandService {
     private final FoodRepository foodRepository;
     private final PolicyRepository policyRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil;
 
     @Transactional
     public MemberResDTO.JoinResultDTO join(MemberReqDTO.JoinDTO request){
@@ -49,5 +53,20 @@ public class MemberCommandService {
         Member savedMember = memberRepository.save(newMember);
         //결과 DTO 전송
         return MemberConverter.toJoinResultDTO(savedMember);
+    }
+
+    public MemberResDTO.LoginResultDTO login(MemberReqDTO.LoginReqDTO request) {
+        Member member = memberRepository.findByMail(request.mail())
+                .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
+
+        if(!passwordEncoder.matches(request.password(), member.getPassword())){
+            throw new MemberException(MemberErrorCode.MEMBER_INVALID_PASSWORD);
+        }
+
+        //accseeToken 있어야 함.
+        AuthMember authMember = new AuthMember(member);
+        String accessToken = jwtUtil.createAccessToken(authMember);
+
+        return new MemberResDTO.LoginResultDTO(accessToken);
     }
 }
